@@ -1708,6 +1708,15 @@ void* wrenGetSlotForeign(WrenVM* vm, int slot)
   return AS_FOREIGN(vm->apiStack[slot])->data;
 }
 
+const char* wrenGetSlotForeignClassName(WrenVM* vm, int slot)
+{
+    validateApiSlot(vm, slot);
+    ASSERT(IS_FOREIGN(vm->apiStack[slot]),
+        "Slot must hold a foreign instance.");
+
+    return AS_FOREIGN(vm->apiStack[slot])->obj.classObj->name->value;
+}
+
 const char* wrenGetSlotString(WrenVM* vm, int slot)
 {
   validateApiSlot(vm, slot);

@@ -111,7 +111,10 @@ typedef enum
   WREN_ERROR_RUNTIME,
 
   // One entry of a runtime error's stack trace.
-  WREN_ERROR_STACK_TRACE
+  WREN_ERROR_STACK_TRACE,
+
+  // Sent when stack trace is complete
+  WREN_ERROR_STACK_TRACE_COMPLETE
 } WrenErrorType;
 
 // Reports an error to the user.
@@ -429,6 +432,9 @@ WREN_API double wrenGetSlotDouble(WrenVM* vm, int slot);
 // It is an error to call this if the slot does not contain an instance of a
 // foreign class.
 WREN_API void* wrenGetSlotForeign(WrenVM* vm, int slot);
+
+// Gets the name of the class in [slot].
+const char* wrenGetSlotForeignClassName(WrenVM* vm, int slot);
 
 // Reads a string from [slot].
 //

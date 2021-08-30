@@ -33,6 +33,9 @@ void wrenDebugPrintStackTrace(WrenVM* vm)
     // traces since we don't want to highlight to a user the implementation
     // detail of what part of the core module is written in C and what is Wren.
     if (fn->module->name == NULL) continue;
+
+    // Skip over CKGL API functions
+    if (strcmp(fn->module->name->value, "ckgl") == 0) continue;
     
     // -1 because IP has advanced past the instruction that it just executed.
     int line = fn->debug->sourceLines.data[frame->ip - fn->code.data - 1];
@@ -40,6 +43,8 @@ void wrenDebugPrintStackTrace(WrenVM* vm)
                        fn->module->name->value, line,
                        fn->debug->name);
   }
+
+  vm->config.errorFn(vm, WREN_ERROR_STACK_TRACE_COMPLETE, NULL, -1, "");
 }
 
 static void dumpObject(Obj* obj)
